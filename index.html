@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Calculator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .calculator {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: blue;
+    }
+
+    .display {
+      background-color: #eee;
+      padding: 10px;
+      font-size: 20px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      text-align: right;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 10px;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      background-color: #eee;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ddd;
+    }
+
+    .operator {
+      background-color: #0a0805;
+      color: #fff;
+    }
+
+    .equal {
+      background-color: #008CBA;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="display">0</div>
+    <div class="buttons">
+      <button class="operator">+</button>
+      <button class="operator">-</button>
+      <button class="operator">*</button>
+      <button class="operator">/</button>
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button>C</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button class="equal">=</button>
+      <button>0</button>
+    </div>
+  </div>
+  <script>
+    const display = document.querySelector('.display');
+    const buttons = document.querySelectorAll('button');
+
+    let currentInput = '0';
+    let operator = null;
+    let previousOperand = null;
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const buttonValue = button.textContent;
+
+        if (buttonValue >= '0' && buttonValue <= '9' || buttonValue === '.') {
+          // Handle number input
+          if (currentInput === '0') {
+            currentInput = buttonValue;
+          } else {
+            currentInput += buttonValue;
+          }
+        } else if (buttonValue === '+') {
+          // Handle addition operator
+          operator = '+';
+          previousOperand = parseFloat(currentInput);
+          currentInput = '0';
+        } else if (buttonValue === '-') {
+          // Handle subtraction operator
+          operator = '-';
+          previousOperand = parseFloat(currentInput);
+          currentInput = '0';
+        } else if (buttonValue === '*') {
+          // Handle multiplication operator
+          operator = '*';
+          previousOperand = parseFloat(currentInput);
+          currentInput = '0';
+        } else if (buttonValue === '/') {
+          // Handle division operator
+          operator = '/';
+          previousOperand = parseFloat(currentInput);
+          currentInput = '0';
+        } else if (buttonValue === '=') {
+          // Handle equal sign
+          const currentOperand = parseFloat(currentInput);
+          let result;
+          if (operator === '+') {
+            result = previousOperand + currentOperand;
+          } else if (operator === '-') {
+            result = previousOperand - currentOperand;
+          } else if (operator === '*') {
+            result = previousOperand * currentOperand;
+          } else if (operator === '/') {
+            if (currentOperand === 0) {
+              result = 'Error';
+            } else {
+              result = previousOperand / currentOperand;
+            }
+          }
+          currentInput = result.toString();
+          operator = null;
+          previousOperand = null;
+        } else if (buttonValue === 'C') {
+          currentInput = '0';
+          operator = null;
+          previousOperand = null;
+        } else if (buttonValue === 'Del') {
+        
+          currentInput = currentInput.slice(0, -1);
+          if (currentInput === '') {
+            currentInput = '0';
+          }
+        }
+
+        display.textContent = currentInput;
+      });
+    });
+  </script>
+</body>
+</html>
